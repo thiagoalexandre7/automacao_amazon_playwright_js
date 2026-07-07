@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { amazonPageElements } from './page_object';
+import { amazonPageElements } from '../page/page_object';
 
 test('Consultar produto Monitor 24 Polegadas', async ({ page }) => {
   
@@ -22,7 +22,33 @@ test('Consultar produto Monitor 24 Polegadas', async ({ page }) => {
   await productLink.click();
 
   //validate search result
-  await inStock.isVisible();
+  await expect(inStock).toBeVisible();
   await productHeading.isVisible();
+
+});
+
+test('Consultar produto Geladeira Brastemp', async ({ page }) => {
+  
+  //variables
+  const { amazonLink, searchBox, searchButton, searchResultsHeading, geladeiraProductLink, geladeiraProductHeading, inStock } = amazonPageElements(page);
+  const productQuery = "Geladeira Brastemp Frost Free 375 litros cor inox - BRM45HK";
+
+  //navigate to page
+  await page.goto(amazonLink);
+
+  //search product
+  await searchBox.fill(productQuery);
+  await searchButton.click();
+
+  //search results
+  await searchResultsHeading.isVisible();
+  await geladeiraProductLink.isVisible();
+
+  //open product
+  await geladeiraProductLink.click();
+
+  //validate search result
+  await expect(inStock).toBeVisible();
+  await geladeiraProductHeading.isVisible();
 
 });
